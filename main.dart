@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-
 void main() {
   print('Starting the Flutter app...');
   runApp(const MyApp());
@@ -37,7 +36,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
- 
             Image.asset(
               'images/logo.png', // Path to your image in the assets folder
               height: 250, // Adjust the height as needed
@@ -62,7 +60,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20), // Add some spacing between the buttons
             ElevatedButton(
               onPressed: () {
-                // Add your button's onPressed logic here
+                // Navigate to the SignupScreen when the button is pressed
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SignupScreen()),
@@ -99,18 +97,17 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(20.0), // Corrected padding syntax
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 'images/logo.png', // Path to your image in the assets folder
                 height: 250, // Adjust the height as needed
-            ),
-            SizedBox(height: 80),
+              ),
+              SizedBox(height: 80),
               TextField(
                 decoration: InputDecoration(
-
                   labelText: 'Username',
                 ),
               ),
@@ -118,7 +115,6 @@ class LoginScreen extends StatelessWidget {
               TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-
                   labelText: 'Password',
                 ),
               ),
@@ -252,7 +248,11 @@ class SignupScreen extends StatelessWidget {
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add your sign-up logic here
+                  // Navigate to MatchPreferencesScreen when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MatchPreferencesScreen()),
+                  );
                 },
                 child: Text(
                   'Create Account',
@@ -263,6 +263,216 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(
+          'User Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 300.0,  // Set the desired width
+                height: 100, // Set the desired height
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null, // Allow the TextField to expand vertically
+                ),
+              ),
+              Container(
+                width: 300.0,  // Set the desired width
+                height: 100, // Set the desired height
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Age',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null, // Allow the TextField to expand vertically
+                ),
+              ),
+              Container(
+                width: 300.0,  // Set the desired width
+                height: 100, // Set the desired height
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Gender',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null, // Allow the TextField to expand vertically
+                ),
+              ),
+              // Enlarged Bio TextField
+              Container(
+                width: 300.0,  // Set the desired width
+                height: 100, // Set the desired height
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Bio',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null, // Allow the TextField to expand vertically
+                ),
+              ),
+              Container(
+                width: 300.0,  // Set the desired width
+                height: 100, // Set the desired height
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Hobbies/Interests',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: null, // Allow the TextField to expand vertically
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Add your save profile logic here
+                },
+                child: Text(
+                  'Create Your Profile',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+class MatchPreferencesScreen extends StatefulWidget {
+  const MatchPreferencesScreen({Key? key}) : super(key: key);
+
+  @override
+  _MatchPreferencesScreenState createState() => _MatchPreferencesScreenState();
+}
+
+class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
+  bool openToRomance = false;
+  bool openToFriendship = false;
+  bool openToMeetingNewPeople = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(
+          'Match Preferences',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Set Your Preferences',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Discover Radius',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Preferred Age Range',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Preferred Gender',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                Divider(
+                  color: Colors.grey,
+                  height: 40,
+                  thickness: 1,
+                ),
+                Text(
+                  'Terms of Engagement',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                CheckboxListTile(
+                  title: Text('Open to Romance'),
+                  value: openToRomance,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      openToRomance = value ?? false;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Open to Friendship'),
+                  value: openToFriendship,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      openToFriendship = value ?? false;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text('Open to Meeting New People'),
+                  value: openToMeetingNewPeople,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      openToMeetingNewPeople = value ?? false;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add your save preferences logic here
+                  },
+                  child: Text(
+                    'Find Matches',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
