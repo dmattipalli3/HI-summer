@@ -121,8 +121,12 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add your login logic here
-                },
+                // Navigate to the HomePage when the button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              },
                 child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -474,6 +478,116 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0; // Track the selected index
+  String _selectedNumber = ''; // Track the selected number
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(
+          'Home Screen',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.white, // Set the background color of the body
+            child: Center(
+              child: Text('Home Page Content'),
+            ),
+          ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Row(
+              children: [
+                _buildNumber('0.25 mi'),
+                SizedBox(width: 6),
+                _buildNumber('0.5 mi'),
+                SizedBox(width: 6),
+                _buildNumber('0.75 mi'),
+                SizedBox(width: 6),
+                _buildNumber('1 mi'),
+              ],
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search), // Change icon to search
+            label: 'Search', // Change label to Search
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.event), // Change icon to party_mode
+            label: 'Parties', // Change label to Parties
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings), // Change icon to settings
+            label: 'Settings', // Change label to Settings
+          ),
+        ],
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        currentIndex: _selectedIndex, // Set the current index
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index; // Update the selected index
+          });
+
+          // Handle navigation or any other action based on the index
+          switch (index) {
+            case 0:
+
+              break;
+            case 1:
+
+              break;
+            case 2:
+
+              break;
+          }
+        },
+        selectedFontSize: 16.0, // Font size for selected item's label
+        unselectedFontSize: 12.0, // Font size for unselected items' labels
+        selectedIconTheme: IconThemeData(size: 32.0), // Icon size for selected item
+        unselectedIconTheme: IconThemeData(size: 24.0), // Icon size for unselected items
+      ),
+    );
+  }
+
+  Widget _buildNumber(String number) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedNumber = number;
+        });
+      },
+      child: Text(
+        number,
+        style: TextStyle(
+          fontSize: _selectedNumber == number ? 16 : 13, // Adjust the font size here
+          color: _selectedNumber == number ? Colors.black : Colors.blueGrey,
         ),
       ),
     );
