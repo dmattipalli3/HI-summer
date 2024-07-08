@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' as picker;
 import 'dart:io';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 void main() {
-  print('Starting the Flutter app...');
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    
+    return const MaterialApp(
       home: HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'Human Interaction',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -40,7 +43,7 @@ class HomeScreen extends StatelessWidget {
               'images/logo.png', // Path to your image in the assets folder
               height: 250, // Adjust the height as needed
             ),
-            SizedBox(height: 80), // Add some spacing between the image and buttons
+            const SizedBox(height: 80), // Add some spacing between the image and buttons
             ElevatedButton(
               onPressed: () {
                 // Navigate to the LoginScreen when the button is pressed
@@ -49,15 +52,15 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const LoginScreen()),
                 );
               },
-              child: Text(
-                'Login',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
+              child: const Text(
+                'Login',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
             ),
-            SizedBox(height: 20), // Add some spacing between the buttons
+            const SizedBox(height: 20), // Add some spacing between the buttons
             ElevatedButton(
               onPressed: () {
                 // Navigate to the SignupScreen when the button is pressed
@@ -66,12 +69,12 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const SignupScreen()),
                 );
               },
-              child: Text(
-                'Sign Up',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
+              ),
+              child: const Text(
+                'Sign Up',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -82,7 +85,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'Login Screen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -105,20 +108,20 @@ class LoginScreen extends StatelessWidget {
                 'images/logo.png', // Path to your image in the assets folder
                 height: 250, // Adjust the height as needed
               ),
-              SizedBox(height: 80),
-              TextField(
+              const SizedBox(height: 80),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                 // Navigate to the HomePage when the button is pressed
@@ -127,12 +130,12 @@ class LoginScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
-                child: Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -144,13 +147,13 @@ class LoginScreen extends StatelessWidget {
 }
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<String?> selectedCollege = ValueNotifier<String?>(null);
-    final ImagePicker _picker = ImagePicker();
-    File? _image;
+    final picker.ImagePicker imagePicker = picker.ImagePicker(); // Use picker.ImagePicker
+    File? image;
 
     final List<String> colleges = [
       'Georgia Tech',
@@ -159,10 +162,10 @@ class SignupScreen extends StatelessWidget {
       'Other'
     ];
 
-    Future<void> _getImage() async {
-      final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    Future<void> getImage() async {
+      final pickedFile = await imagePicker.pickImage(source: picker.ImageSource.gallery); // Use picker.ImageSource
       if (pickedFile != null) {
-        _image = File(pickedFile.path);
+        image = File(pickedFile.path);
       }
     }
 
@@ -170,7 +173,7 @@ class SignupScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'Sign Up Screen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -183,55 +186,55 @@ class SignupScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  _getImage();
+                  getImage();
                 },
                 child: Container(
                   width: 150,
                   height: 150,
                   color: Colors.grey[200],
-                  child: _image != null
-                      ? Image.file(_image!, fit: BoxFit.cover)
-                      : Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+                  child: image != null
+                      ? Image.file(image!, fit: BoxFit.cover)
+                      : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'First Name',
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              SizedBox(height: 20.0),
-              TextField(
+              const SizedBox(height: 20.0),
+              const TextField(
                 decoration: InputDecoration(
                   labelText: 'University Email',
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ValueListenableBuilder<String?>(
                 valueListenable: selectedCollege,
                 builder: (context, value, child) {
                   return DropdownButtonFormField<String>(
                     value: value,
-                    hint: Text('Select your college'),
+                    hint: const Text('Select your college'),
                     dropdownColor: Colors.white,
                     onChanged: (String? newValue) {
                       selectedCollege.value = newValue;
@@ -242,14 +245,14 @@ class SignupScreen extends StatelessWidget {
                         child: Text(value),
                       );
                     }).toList(),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'College',
                       border: OutlineInputBorder(),
                     ),
                   );
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // Navigate to MatchPreferencesScreen when the button is pressed
@@ -258,12 +261,12 @@ class SignupScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const MatchPreferencesScreen()),
                   );
                 },
-                child: Text(
-                  'Create Account',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
+                ),
+                child: const Text(
+                  'Create Account',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -275,7 +278,7 @@ class SignupScreen extends StatelessWidget {
 }
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  const UserProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +286,7 @@ class UserProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'User Profile',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -294,7 +297,7 @@ class UserProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              const SizedBox(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -305,7 +308,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -316,7 +319,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -328,7 +331,7 @@ class UserProfileScreen extends StatelessWidget {
                 ),
               ),
               // Enlarged Bio TextField
-              Container(
+              const SizedBox(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -339,7 +342,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -350,17 +353,17 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // Add your save profile logic here
                 },
-                child: Text(
-                  'Create Your Profile',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
+                ),
+                child: const Text(
+                  'Create Your Profile',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -371,13 +374,13 @@ class UserProfileScreen extends StatelessWidget {
   }
 }
 class MatchPreferencesScreen extends StatefulWidget {
-  const MatchPreferencesScreen({Key? key}) : super(key: key);
+  const MatchPreferencesScreen({super.key});
 
   @override
-  _MatchPreferencesScreenState createState() => _MatchPreferencesScreenState();
+  MatchPreferencesScreenState createState() => MatchPreferencesScreenState();
 }
 
-class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
+class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
   bool openToRomance = false;
   bool openToFriendship = false;
   bool openToMeetingNewPeople = false;
@@ -388,7 +391,7 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'Match Preferences',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -400,43 +403,43 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Set Your Preferences',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20.0),
-                TextField(
+                const SizedBox(height: 20.0),
+                const TextField(
                   decoration: InputDecoration(
                     labelText: 'Discover Radius',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20),
-                TextField(
+                const SizedBox(height: 20),
+                const TextField(
                   decoration: InputDecoration(
                     labelText: 'Preferred Age Range',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20.0),
-                TextField(
+                const SizedBox(height: 20.0),
+                const TextField(
                   decoration: InputDecoration(
                     labelText: 'Preferred Gender',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Divider(
+                const SizedBox(height: 20.0),
+                const Divider(
                   color: Colors.grey,
                   height: 40,
                   thickness: 1,
                 ),
-                Text(
+                const Text(
                   'Terms of Engagement',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 CheckboxListTile(
-                  title: Text('Open to Romance'),
+                  title: const Text('Open to Romance'),
                   value: openToRomance,
                   onChanged: (bool? value) {
                     setState(() {
@@ -445,7 +448,7 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Open to Friendship'),
+                  title: const Text('Open to Friendship'),
                   value: openToFriendship,
                   onChanged: (bool? value) {
                     setState(() {
@@ -454,7 +457,7 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: Text('Open to Meeting New People'),
+                  title: const Text('Open to Meeting New People'),
                   value: openToMeetingNewPeople,
                   onChanged: (bool? value) {
                     setState(() {
@@ -462,17 +465,17 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                     });
                   },
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     // Add your save preferences logic here
                   },
-                  child: Text(
-                    'Find Matches',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
+                  ),
+                  child: const Text(
+                    'Find Matches',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -486,9 +489,10 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -501,33 +505,31 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
+        title: const Text(
           'Home Screen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Stack(
         children: [
-          Container(
-            color: Colors.white, // Set the background color of the body
-            child: Center(
-              child: Text('Home Page Content'),
-            ),
-          ),
+          
           Positioned(
             top: 16,
             right: 16,
             child: Row(
               children: [
                 _buildNumber('0.25 mi'),
-                SizedBox(width: 6),
+                const SizedBox(width: 6),
                 _buildNumber('0.5 mi'),
-                SizedBox(width: 6),
+                const SizedBox(width: 6),
                 _buildNumber('0.75 mi'),
-                SizedBox(width: 6),
+                const SizedBox(width: 6),
                 _buildNumber('1 mi'),
               ],
             ),
+          ),
+          const Positioned.fill(
+            child: FullMap(), // Embed FullMap widget here
           ),
         ],
       ),
@@ -558,20 +560,20 @@ class _HomePageState extends State<HomePage> {
           // Handle navigation or any other action based on the index
           switch (index) {
             case 0:
-
+              // Handle Search navigation
               break;
             case 1:
-
+              // Handle Parties navigation
               break;
             case 2:
-
+              // Handle Settings navigation
               break;
           }
         },
         selectedFontSize: 16.0, // Font size for selected item's label
         unselectedFontSize: 12.0, // Font size for unselected items' labels
-        selectedIconTheme: IconThemeData(size: 32.0), // Icon size for selected item
-        unselectedIconTheme: IconThemeData(size: 24.0), // Icon size for unselected items
+        selectedIconTheme: const IconThemeData(size: 32.0), // Icon size for selected item
+        unselectedIconTheme: const IconThemeData(size: 24.0), // Icon size for unselected items
       ),
     );
   }
@@ -592,4 +594,38 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class FullMap extends StatefulWidget {
+  const FullMap({super.key});
+
+  @override
+  State createState() => FullMapState();
+}
+
+class FullMapState extends State<FullMap> {
+  MapboxMap? mapboxMap;
+
+  _onMapCreated(MapboxMap mapboxMap) {
+    this.mapboxMap = mapboxMap;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MapWidget(
+      key: const ValueKey("mapWidget"),
+      onMapCreated: _onMapCreated,
+
+      styleUri: 'mapbox://styles/mapbox/streets-v11',
+      cameraOptions: CameraOptions(
+        center: Point(
+          coordinates: Position(
+            37.7749,
+            122.4194,
+            100.0
+          ),
+        ),
+        zoom: 12.0,
+      ),
+    );
+  } 
 }
