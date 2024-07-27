@@ -1,91 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart' as picker;
+import 'package:image_picker/image_picker.dart';
+import 'dart:ui'; // For ImageFilter
 import 'dart:io';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 void main() {
+  print('Starting the Flutter app...');
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
-  
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
-    return const MaterialApp(
+    return MaterialApp(
       home: HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'Human Interaction',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'images/logo.png', // Path to your image in the assets folder
-              height: 250, // Adjust the height as needed
+
+        body: Container(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('images/logo.png'),
+                SizedBox(height: 50), // Add some spacing between the image and buttons
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the LoginScreen when the button is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white, fontSize: 20 , fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange[800],
+                  ),
+                ),
+                SizedBox(height: 20), // Add some spacing between the buttons
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the SignupScreen when the button is pressed
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignupScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(color: Colors.white,fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange[800],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 80), // Add some spacing between the image and buttons
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the LoginScreen when the button is pressed
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-              child: const Text(
-                'Login',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 20), // Add some spacing between the buttons
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to the SignupScreen when the button is pressed
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignupScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        )
     );
   }
 }
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +83,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'Login Screen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -104,38 +94,35 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'images/logo.png', // Path to your image in the assets folder
-                height: 250, // Adjust the height as needed
-              ),
-              const SizedBox(height: 80),
-              const TextField(
+              Image.asset('images/logo.png'),
+              SizedBox(height: 80),
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                // Navigate to the HomePage when the button is pressed
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
-                child: const Text(
+                  // Add your login logic here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MapScreen()),
+                  );
+                },
+                child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
                 ),
               ),
             ],
@@ -147,13 +134,13 @@ class LoginScreen extends StatelessWidget {
 }
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<String?> selectedCollege = ValueNotifier<String?>(null);
-    final picker.ImagePicker imagePicker = picker.ImagePicker(); // Use picker.ImagePicker
-    File? image;
+    final ImagePicker _picker = ImagePicker();
+    File? _image;
 
     final List<String> colleges = [
       'Georgia Tech',
@@ -162,10 +149,10 @@ class SignupScreen extends StatelessWidget {
       'Other'
     ];
 
-    Future<void> getImage() async {
-      final pickedFile = await imagePicker.pickImage(source: picker.ImageSource.gallery); // Use picker.ImageSource
+    Future<void> _getImage() async {
+      final pickedFile = await _picker.getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        image = File(pickedFile.path);
+        _image = File(pickedFile.path);
       }
     }
 
@@ -173,7 +160,7 @@ class SignupScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'Sign Up Screen',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -186,55 +173,55 @@ class SignupScreen extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  getImage();
+                  _getImage();
                 },
                 child: Container(
                   width: 150,
                   height: 150,
                   color: Colors.grey[200],
-                  child: image != null
-                      ? Image.file(image!, fit: BoxFit.cover)
-                      : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+                  child: _image != null
+                      ? Image.file(_image!, fit: BoxFit.cover)
+                      : Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'First Name',
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'Username',
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
                 ),
               ),
-              const SizedBox(height: 20.0),
-              const TextField(
+              SizedBox(height: 20.0),
+              TextField(
                 decoration: InputDecoration(
                   labelText: 'University Email',
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               ValueListenableBuilder<String?>(
                 valueListenable: selectedCollege,
                 builder: (context, value, child) {
                   return DropdownButtonFormField<String>(
                     value: value,
-                    hint: const Text('Select your college'),
+                    hint: Text('Select your college'),
                     dropdownColor: Colors.white,
                     onChanged: (String? newValue) {
                       selectedCollege.value = newValue;
@@ -245,14 +232,14 @@ class SignupScreen extends StatelessWidget {
                         child: Text(value),
                       );
                     }).toList(),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'College',
                       border: OutlineInputBorder(),
                     ),
                   );
                 },
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // Navigate to MatchPreferencesScreen when the button is pressed
@@ -261,12 +248,12 @@ class SignupScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const MatchPreferencesScreen()),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
-                child: const Text(
+                child: Text(
                   'Create Account',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
                 ),
               ),
             ],
@@ -278,7 +265,7 @@ class SignupScreen extends StatelessWidget {
 }
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -286,7 +273,7 @@ class UserProfileScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'User Profile',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -297,7 +284,7 @@ class UserProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
+              Container(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -308,7 +295,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              const SizedBox(
+              Container(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -319,7 +306,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              const SizedBox(
+              Container(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -331,7 +318,7 @@ class UserProfileScreen extends StatelessWidget {
                 ),
               ),
               // Enlarged Bio TextField
-              const SizedBox(
+              Container(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -342,7 +329,7 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              const SizedBox(
+              Container(
                 width: 300.0,  // Set the desired width
                 height: 100, // Set the desired height
                 child: TextField(
@@ -353,17 +340,17 @@ class UserProfileScreen extends StatelessWidget {
                   maxLines: null, // Allow the TextField to expand vertically
                 ),
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   // Add your save profile logic here
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
-                child: const Text(
+                child: Text(
                   'Create Your Profile',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
                 ),
               ),
             ],
@@ -374,13 +361,13 @@ class UserProfileScreen extends StatelessWidget {
   }
 }
 class MatchPreferencesScreen extends StatefulWidget {
-  const MatchPreferencesScreen({super.key});
+  const MatchPreferencesScreen({Key? key}) : super(key: key);
 
   @override
-  MatchPreferencesScreenState createState() => MatchPreferencesScreenState();
+  _MatchPreferencesScreenState createState() => _MatchPreferencesScreenState();
 }
 
-class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
+class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
   bool openToRomance = false;
   bool openToFriendship = false;
   bool openToMeetingNewPeople = false;
@@ -391,7 +378,7 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text(
+        title: Text(
           'Match Preferences',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -403,43 +390,43 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Set Your Preferences',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 20.0),
-                const TextField(
+                SizedBox(height: 20.0),
+                TextField(
                   decoration: InputDecoration(
                     labelText: 'Discover Radius',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const TextField(
+                SizedBox(height: 20),
+                TextField(
                   decoration: InputDecoration(
                     labelText: 'Preferred Age Range',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                const TextField(
+                SizedBox(height: 20.0),
+                TextField(
                   decoration: InputDecoration(
                     labelText: 'Preferred Gender',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                const Divider(
+                SizedBox(height: 20.0),
+                Divider(
                   color: Colors.grey,
                   height: 40,
                   thickness: 1,
                 ),
-                const Text(
+                Text(
                   'Terms of Engagement',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 CheckboxListTile(
-                  title: const Text('Open to Romance'),
+                  title: Text('Open to Romance'),
                   value: openToRomance,
                   onChanged: (bool? value) {
                     setState(() {
@@ -448,7 +435,7 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: const Text('Open to Friendship'),
+                  title: Text('Open to Friendship'),
                   value: openToFriendship,
                   onChanged: (bool? value) {
                     setState(() {
@@ -457,7 +444,7 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: const Text('Open to Meeting New People'),
+                  title: Text('Open to Meeting New People'),
                   value: openToMeetingNewPeople,
                   onChanged: (bool? value) {
                     setState(() {
@@ -465,17 +452,17 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 20.0),
+                SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     // Add your save preferences logic here
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                  ),
-                  child: const Text(
+                  child: Text(
                     'Find Matches',
                     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
                   ),
                 ),
               ],
@@ -487,145 +474,158 @@ class MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
   }
 }
 
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MapScreen extends StatefulWidget {
+  const MapScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
+  _MapScreenState createState() => _MapScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0; // Track the selected index
-  String _selectedNumber = ''; // Track the selected number
+
+
+
+class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
+  bool _showProfileCircle = false;
+  late AnimationController _slideController;
+  late AnimationController _slideSettController;
+  late AnimationController _slideFrenController;
+  late AnimationController _fadeController;
+  late Animation<Alignment> _offsetProfAnimation;
+  late Animation<Alignment> _offsetSettAnimation;
+  late Animation<Alignment> _offsetFrenAnimation;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _slideController = AnimationController(
+      duration: const Duration(milliseconds: 300), // Duration for sliding in
+      vsync: this,
+    );
+    _slideSettController = AnimationController(
+      duration: const Duration(milliseconds: 350), // Duration for sliding in
+      vsync: this,
+    );
+    _slideFrenController = AnimationController(
+      duration: const Duration(milliseconds: 400), // Duration for sliding in
+      vsync: this,
+    );
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 250), // Duration for fading
+      vsync: this,
+    );
+    _offsetProfAnimation = Tween<Alignment>(
+      begin: Alignment(-2.0, -0.4), // Start off-screen
+      end: Alignment(-0.9, -0.4), // End at the final position
+    ).animate(CurvedAnimation(
+      parent: _slideController,
+      curve: Curves.easeInOut,
+      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+    ));
+    _offsetSettAnimation = Tween<Alignment>(
+      begin: Alignment(-2.0, 0.0), // Start off-screen
+      end: Alignment(-0.9, 0.0), // End at the final position
+    ).animate(CurvedAnimation(
+      parent: _slideSettController,
+      curve: Curves.easeInOut,
+      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+    ));
+    _offsetFrenAnimation = Tween<Alignment>(
+      begin: Alignment(-2.0, 0.4), // Start off-screen
+      end: Alignment(-0.9, 0.4), // End at the final position
+    ).animate(CurvedAnimation(
+      parent: _slideFrenController,
+      curve: Curves.easeInOut,
+      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+    ));
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  void _handleDoubleTap() {
+    setState(() {
+      if (_showProfileCircle) {
+        _fadeController.reverse();
+        _slideSettController.reverse();
+        _slideFrenController.reverse();
+        _slideController.reverse().then((_) {
+          setState(() {
+            _showProfileCircle = false;
+          });
+        });
+      } else {
+        _showProfileCircle = true;
+        _fadeController.forward();
+        _slideController.forward();
+        _slideSettController.forward();
+        _slideFrenController.forward();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _slideController.dispose();
+    _fadeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'Home Screen',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
       body: Stack(
         children: [
-          
-          Positioned(
-            top: 16,
-            right: 16,
-            child: Row(
-              children: [
-                _buildNumber('0.25 mi'),
-                const SizedBox(width: 6),
-                _buildNumber('0.5 mi'),
-                const SizedBox(width: 6),
-                _buildNumber('0.75 mi'),
-                const SizedBox(width: 6),
-                _buildNumber('1 mi'),
-              ],
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/map.png'), // Replace with your image asset
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          const Positioned.fill(
-            child: FullMap(), // Embed FullMap widget here
+          FadeTransition(
+            opacity: _fadeAnimation,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+              child: Container(
+                color: Colors.black.withOpacity(0.1), // Transparent container to apply the blur effect
+              ),
+            ),
+          ),
+          GestureDetector(
+            onDoubleTap: _handleDoubleTap,
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+          AlignTransition(
+            alignment: _offsetProfAnimation,
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage('images/prof.png'), // Replace with your asset image path
+              ),
+            ),
+          AlignTransition(
+            alignment: _offsetSettAnimation,
+            child: CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('images/sett.png'), // Replace with your asset image path
+            ),
+          ),
+          AlignTransition(
+            alignment: _offsetFrenAnimation,
+            child: CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('images/fren.png'), // Replace with your asset image path
+            ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search), // Change icon to search
-            label: 'Search', // Change label to Search
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event), // Change icon to party_mode
-            label: 'Parties', // Change label to Parties
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings), // Change icon to settings
-            label: 'Settings', // Change label to Settings
-          ),
-        ],
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        currentIndex: _selectedIndex, // Set the current index
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index; // Update the selected index
-          });
-
-          // Handle navigation or any other action based on the index
-          switch (index) {
-            case 0:
-              // Handle Search navigation
-              break;
-            case 1:
-              // Handle Parties navigation
-              break;
-            case 2:
-              // Handle Settings navigation
-              break;
-          }
-        },
-        selectedFontSize: 16.0, // Font size for selected item's label
-        unselectedFontSize: 12.0, // Font size for unselected items' labels
-        selectedIconTheme: const IconThemeData(size: 32.0), // Icon size for selected item
-        unselectedIconTheme: const IconThemeData(size: 24.0), // Icon size for unselected items
-      ),
     );
   }
-
-  Widget _buildNumber(String number) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedNumber = number;
-        });
-      },
-      child: Text(
-        number,
-        style: TextStyle(
-          fontSize: _selectedNumber == number ? 16 : 13, // Adjust the font size here
-          color: _selectedNumber == number ? Colors.black : Colors.blueGrey,
-        ),
-      ),
-    );
-  }
-}
-
-class FullMap extends StatefulWidget {
-  const FullMap({super.key});
-
-  @override
-  State createState() => FullMapState();
-}
-
-class FullMapState extends State<FullMap> {
-  MapboxMap? mapboxMap;
-
-  _onMapCreated(MapboxMap mapboxMap) {
-    this.mapboxMap = mapboxMap;
-  }
-  @override
-  Widget build(BuildContext context) {
-    return MapWidget(
-      key: const ValueKey("mapWidget"),
-      onMapCreated: _onMapCreated,
-
-      styleUri: 'mapbox://styles/mapbox/streets-v11',
-      cameraOptions: CameraOptions(
-        center: Point(
-          coordinates: Position(
-            37.7749,
-            122.4194,
-            100.0
-          ),
-        ),
-        zoom: 12.0,
-      ),
-    );
-  } 
 }
