@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "745546326127",
+    "project_id": "hi-test-edd1d",
+    "storage_bucket": "hi-test-edd1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745546326127:android:90c45d46f17f5733552d9a",
+        "android_client_info": {
+          "package_name": "com.example.hitest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZNQOFeXvPWt8M3Tj3wnGIB6vyVgp05l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
