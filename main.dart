@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' as ip;
 import 'dart:ui'; // For ImageFilter
 import 'dart:io';
+
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+//import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 void main() {
   print('Starting the Flutter app...');
@@ -139,7 +142,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<String?> selectedCollege = ValueNotifier<String?>(null);
-    final ImagePicker _picker = ImagePicker();
+    final ip.ImagePicker _picker = ip.ImagePicker();
     File? _image;
 
     final List<String> colleges = [
@@ -150,7 +153,7 @@ class SignupScreen extends StatelessWidget {
     ];
 
     Future<void> _getImage() async {
-      final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+      final pickedFile = await _picker.pickImage(source: ip.ImageSource.gallery);
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       }
@@ -577,17 +580,17 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+     String token =
+        "sk.eyJ1Ijoic2FjcmFqZWV2IiwiYSI6ImNsd2N3YXY2azB6eHcycXF0ZGNqY3ZjeXQifQ.6kvVjXFcAMSdulhvg8RDuw";
+    MapboxOptions.setAccessToken(token);
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/map.png'), // Replace with your image asset
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+         MapWidget(
+            cameraOptions: CameraOptions(
+              center: Point(coordinates: Position(-84.394838, 33.772356)),
+              zoom: 18.0),
+         ),
           FadeTransition(
             opacity: _fadeAnimation,
             child: BackdropFilter(
