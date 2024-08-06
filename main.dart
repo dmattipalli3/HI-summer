@@ -476,6 +476,107 @@ class _MatchPreferencesScreenState extends State<MatchPreferencesScreen> {
     );
   }
 }
+class SettingsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(child: Text('Settings Page')),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: 1, // Settings is the current page
+        backgroundColor: Colors.blue, // Set background color to blue
+        selectedItemColor: Colors.white, // Set color for selected item
+        unselectedItemColor: Colors.white70, // Set color for unselected items
+        onTap: (index) {
+          switch (index) {
+            case 0: // Home
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MapScreen()),
+              );
+              break;
+            case 1:
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+              break;
+          }
+        },
+      ),
+    );
+  }
+}
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(child: Text('Profile Page')),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: 2, // Profile is the current page
+        backgroundColor: Colors.blue, // Set background color to blue
+        selectedItemColor: Colors.white, // Set color for selected item
+        unselectedItemColor: Colors.white70, // Set color for unselected items
+        onTap: (index) {
+          switch (index) {
+            case 0: // Home
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MapScreen()),
+              );
+              break;
+            case 1: // Settings
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+              break;
+            case 2: // Profile
+            // Already on Profile page, no action needed
+              break;
+          }
+        },
+      ),
+    );
+  }
+}
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -484,11 +585,7 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-
-
-
 class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
-  bool _showProfileCircle = false;
   late AnimationController _slideController;
   late AnimationController _slideSettController;
   late AnimationController _slideFrenController;
@@ -502,44 +599,44 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _slideController = AnimationController(
-      duration: const Duration(milliseconds: 300), // Duration for sliding in
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
     _slideSettController = AnimationController(
-      duration: const Duration(milliseconds: 350), // Duration for sliding in
+      duration: const Duration(milliseconds: 350),
       vsync: this,
     );
     _slideFrenController = AnimationController(
-      duration: const Duration(milliseconds: 400), // Duration for sliding in
+      duration: const Duration(milliseconds: 400),
       vsync: this,
     );
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 250), // Duration for fading
+      duration: const Duration(milliseconds: 250),
       vsync: this,
     );
     _offsetProfAnimation = Tween<Alignment>(
-      begin: Alignment(-2.0, -0.4), // Start off-screen
-      end: Alignment(-0.9, -0.4), // End at the final position
+      begin: Alignment(-2.0, -0.4),
+      end: Alignment(-0.9, -0.4),
     ).animate(CurvedAnimation(
       parent: _slideController,
       curve: Curves.easeInOut,
-      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+      reverseCurve: Curves.ease,
     ));
     _offsetSettAnimation = Tween<Alignment>(
-      begin: Alignment(-2.0, 0.0), // Start off-screen
-      end: Alignment(-0.9, 0.0), // End at the final position
+      begin: Alignment(-2.0, 0.0),
+      end: Alignment(-0.9, 0.0),
     ).animate(CurvedAnimation(
       parent: _slideSettController,
       curve: Curves.easeInOut,
-      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+      reverseCurve: Curves.ease,
     ));
     _offsetFrenAnimation = Tween<Alignment>(
-      begin: Alignment(-2.0, 0.4), // Start off-screen
-      end: Alignment(-0.9, 0.4), // End at the final position
+      begin: Alignment(-2.0, 0.4),
+      end: Alignment(-0.9, 0.4),
     ).animate(CurvedAnimation(
       parent: _slideFrenController,
       curve: Curves.easeInOut,
-      reverseCurve: Curves.ease,// Elastic curve for bounce effect when coming in
+      reverseCurve: Curves.ease,
     ));
     _fadeAnimation = Tween<double>(
       begin: 0.0,
@@ -548,27 +645,6 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       parent: _fadeController,
       curve: Curves.easeInOut,
     ));
-  }
-
-  void _handleDoubleTap() {
-    setState(() {
-      if (_showProfileCircle) {
-        _fadeController.reverse();
-        _slideSettController.reverse();
-        _slideFrenController.reverse();
-        _slideController.reverse().then((_) {
-          setState(() {
-            _showProfileCircle = false;
-          });
-        });
-      } else {
-        _showProfileCircle = true;
-        _fadeController.forward();
-        _slideController.forward();
-        _slideSettController.forward();
-        _slideFrenController.forward();
-      }
-    });
   }
 
   @override
@@ -580,54 +656,95 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-     String token =
+    String token =
         "sk.eyJ1Ijoic2FjcmFqZWV2IiwiYSI6ImNsd2N3YXY2azB6eHcycXF0ZGNqY3ZjeXQifQ.6kvVjXFcAMSdulhvg8RDuw";
     MapboxOptions.setAccessToken(token);
+
     return Scaffold(
       body: Stack(
         children: [
-         MapWidget(
+          MapWidget(
             cameraOptions: CameraOptions(
               center: Point(coordinates: Position(-84.394838, 33.772356)),
-              zoom: 18.0),
-         ),
-          FadeTransition(
-            opacity: _fadeAnimation,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-              child: Container(
-                color: Colors.black.withOpacity(0.1), // Transparent container to apply the blur effect
-              ),
+              zoom: 18.0,
             ),
           ),
-          GestureDetector(
-            onDoubleTap: _handleDoubleTap,
-            child: Container(
-              color: Colors.transparent,
+          IgnorePointer(
+            ignoring: true,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+                child: Container(
+                  color: Colors.black.withOpacity(0.1),
+                ),
+              ),
             ),
           ),
           AlignTransition(
             alignment: _offsetProfAnimation,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('images/prof.png'), // Replace with your asset image path
-              ),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('images/prof.png'),
             ),
+          ),
           AlignTransition(
             alignment: _offsetSettAnimation,
             child: CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('images/sett.png'), // Replace with your asset image path
+              backgroundImage: AssetImage('images/sett.png'),
             ),
           ),
           AlignTransition(
             alignment: _offsetFrenAnimation,
             child: CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('images/fren.png'), // Replace with your asset image path
+              backgroundImage: AssetImage('images/fren.png'),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: 0,
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MapScreen()),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+              break;
+            case 2:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+              break;
+          }
+        },
       ),
     );
   }
